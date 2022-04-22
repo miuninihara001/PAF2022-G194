@@ -126,5 +126,79 @@ public class Schedule {
 		}
 		return output;
 	}
+	
+public String updateSchedule(String ID, String lineno, String areano, String areaname, String starttime, String endtime, String date, String reason) {
+		
+		String output = "";
+		try
+		{
+			Connection con = connect();
+			
+			if (con == null)
+			{
+				return "Error while connecting to the database for updating.";
+			}
+			
+			// create a prepared statement
+			String query = "UPDATE shedules SET lineNo=?,areaNo=?, areaName=?, startTime=?, endTime=?, date=?, reason=? WHERE sheduleId=?";
+			
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+		
+			// binding values
+			preparedStmt.setString(1, lineno);
+			preparedStmt.setString(2, areano);
+			preparedStmt.setString(3, areaname);
+			preparedStmt.setString(4, starttime);
+			preparedStmt.setString(5, endtime);
+			preparedStmt.setString(6, date);
+			preparedStmt.setString(7, reason);
+			preparedStmt.setInt(8, Integer.parseInt(ID));
+			
+			// execute the statement
+			preparedStmt.execute();
+			con.close();
+			
+			output = "Updated successfully";
+		}
+		catch (Exception e)
+		{
+			output = "Error while updating the Shedule.";
+			System.err.println(e.getMessage());
+		}
+		
+		return output;
+		
+	}
+public String deleteShedule(String sheduleId)
+{
+	String output = "";
+	try{
+		Connection con = connect();
+			if (con == null)
+			{	
+				return "Error while connecting to the database for deleting."; 
+			}
+			
+			// create a prepared statement
+			String query = "delete from shedules where sheduleId=?";
+			
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			// binding values
+
+			preparedStmt.setInt(1, Integer.parseInt(sheduleId));
+			
+			// execute the statement
+			preparedStmt.execute();
+			con.close();
+			
+			output = "Deleted successfully";
+	}
+	catch (Exception e)
+	{
+		output = "Error while deleting the shedule.";
+		System.err.println(e.getMessage());
+	}
+	return output;
+}
 
 }
