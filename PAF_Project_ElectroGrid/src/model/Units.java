@@ -67,5 +67,62 @@ public class Units {
 	 return output;
 	 
 	 }
+	
+	
+
+	public String readUnits()
+	 {
+		String output = "";
+	 try
+	 {
+		 Connection con = connect();
+		 if (con == null)
+		 {
+			 return "Error while connecting to the database for reading."; 
+		 }
+		 
+	 // Prepare the html table to be displayed
+	 output = "<table border='1'><tr><th>AccountNO</th><th>Consumer Name</th>" +"<th>Address</th>" +
+	 "<th>Consumed Units</th>" + "<th>Date</th></tr>";
+
+	 String query = "select * from unitrecords";
+	 Statement stmt = con.createStatement();
+	 ResultSet rs = stmt.executeQuery(query);
+	 
+	 // iterate through the rows in the result set
+	 while (rs.next())
+	 {
+		 String recordID = Integer.toString(rs.getInt("recordID"));
+		 String accountNo = rs.getString("accountNo");
+		 String consumerName = rs.getString("consumerName");
+		 String address = rs.getString("address");
+		 String consumedUnits =Integer.toString(rs.getInt("consumedUnits"));
+		 String date = rs.getString("date");
+	 
+		 // Add into the html table
+		 output += "<tr><td>" + accountNo + "</td>";
+		 output += "<td>" + consumerName + "</td>";
+		 output += "<td>" + address + "</td>";
+		 output += "<td>" + consumedUnits + "</td>";
+		 output += "<td>" + date + "</td>";
+		 // buttons
+//		 output += "<td><input name='btnUpdate' type='button' value='Update'class='btn btn-secondary'></td>"+ "<td><form method='post' action='items.jsp'>"+ "<input name='btnRemove' type='submit' value='Remove'class='btn btn-danger'>"
+//		+ "<input name='itemID' type='hidden' value='" + itemID
+//		+ "'>" + "</form></td></tr>";
+		 
+	 }
+	 	con.close();
+	 	// Complete the html table
+	 	output += "</table>";
+	 }
+	 		catch (Exception e)
+	 {
+	 		output = "Error while reading the items.";
+	 		System.err.println(e.getMessage());
+	 }
+	 		return output;
+	 }
+	
+	
 
 }

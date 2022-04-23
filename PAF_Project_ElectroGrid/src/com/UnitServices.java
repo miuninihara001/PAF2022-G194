@@ -10,12 +10,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+//import org.jsoup.Jsoup;
+//import org.jsoup.nodes.Document;
+//import org.jsoup.parser.Parser;
+//
+//import com.google.gson.JsonObject;
+//import com.google.gson.JsonParser;
 
 import model.Units;
 
@@ -40,5 +40,17 @@ public class UnitServices {
 	return output;
 	}
 
+	
+	
+	
+	@GET
+	@Path("/")
+	@Produces(MediaType.TEXT_HTML)
+	public String readUnits()
+	 {
+	 return readObj.readUnits();
+	}
+	
+	
 	
 }
