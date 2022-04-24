@@ -28,7 +28,7 @@ public class Units {
 	
 	
 
-	public String insertRecords(String acc, String name, String address, Integer units, String date)
+	public String insertRecords(String acc, String name, String house, String district, Integer units, String date)
 	 {
 		String output = "";
 	 try
@@ -40,7 +40,7 @@ public class Units {
 		 }
 		 
 		 	// create a prepared statement
-		 	String query = " insert into unitrecords(`recordID`,`accountNo`,`consumerName`,`address`,`consumedUnits`, `date`)"
+		 	String query = " insert into unitrecords(`recordID`,`accountNo`,`consumerName`,`houseNo`,`district`,`consumedUnits`, `date`)"
 		 	+ " values (?, ?, ?, ?, ?, ?)";
 		 	
 		 	PreparedStatement preparedStmt = con.prepareStatement(query);
@@ -48,9 +48,10 @@ public class Units {
 		 	preparedStmt.setInt(1, 0);
 		 	preparedStmt.setString(2, acc);
 	 		preparedStmt.setString(3, name);
-	 		preparedStmt.setString(4, address);
-	 		preparedStmt.setInt(5, units);
-	 		preparedStmt.setString(6, date);
+	 		preparedStmt.setString(4, house);
+	 		preparedStmt.setString(5, district);
+	 		preparedStmt.setInt(6, units);
+	 		preparedStmt.setString(7, date);
 	 		
 	 		// execute the statement
 	 
@@ -82,8 +83,8 @@ public class Units {
 		 }
 		 
 	 // Prepare the html table to be displayed
-	 output = "<table border='1'><tr><th>AccountNO</th><th>Consumer Name</th>" +"<th>Address</th>" +
-	 "<th>Consumed Units</th>" + "<th>Date</th></tr>";
+	 output = "<table border='1'><tr><th>AccountNO</th><th>Consumer Name</th>" +"<th>HouseNo</th>" +
+	 "<th>District</th>" + "<th>Consumed Units</th>" + "<th>Date</th></tr>";
 
 	 String query = "select * from unitrecords";
 	 Statement stmt = con.createStatement();
@@ -95,14 +96,16 @@ public class Units {
 		 String recordID = Integer.toString(rs.getInt("recordID"));
 		 String accountNo = rs.getString("accountNo");
 		 String consumerName = rs.getString("consumerName");
-		 String address = rs.getString("address");
+		 String houseNo = rs.getString("houseNo");
+		 String district = rs.getString("district");
 		 String consumedUnits =Integer.toString(rs.getInt("consumedUnits"));
 		 String date = rs.getString("date");
 	 
 		 // Add into the html table
 		 output += "<tr><td>" + accountNo + "</td>";
 		 output += "<td>" + consumerName + "</td>";
-		 output += "<td>" + address + "</td>";
+		 output += "<td>" + houseNo + "</td>";
+		 output += "<td>" + district + "</td>";
 		 output += "<td>" + consumedUnits + "</td>";
 		 output += "<td>" + date + "</td>";
 		 // buttons

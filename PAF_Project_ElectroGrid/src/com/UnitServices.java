@@ -32,11 +32,12 @@ public class UnitServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String insertItem(@FormParam("accountNo") String accountNo,
 	 @FormParam("consumerName") String consumerName,
-	 @FormParam("address") String address,
+	 @FormParam("houseNo") String houseNo,
+	 @FormParam("district") String district,
 	 @FormParam("consumedUnits") Integer consumedUnits,
 	 @FormParam("date") String date)
 	{
-	 String output = readObj.insertRecords(accountNo, consumerName, address, consumedUnits,date);
+	 String output = readObj.insertRecords(accountNo, consumerName, houseNo, district, consumedUnits, date);
 	return output;
 	}
 
