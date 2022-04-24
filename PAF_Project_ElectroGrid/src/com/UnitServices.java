@@ -1,5 +1,8 @@
 package com;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -9,6 +12,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -35,12 +42,13 @@ public class UnitServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String insertItem(@FormParam("accountNo") String accountNo,
 	 @FormParam("consumerName") String consumerName,
-	 @FormParam("houseNo") String houseNo,
+	 @FormParam("address") String address,
 	 @FormParam("district") String district,
 	 @FormParam("consumedUnits") Integer consumedUnits,
-	 @FormParam("date") String date)
+	 @FormParam("year") String year,
+	 @FormParam("month") String month)
 	{
-	 String output = readObj.insertRecords(accountNo, consumerName, houseNo, district, consumedUnits, date);
+	 String output = readObj.insertUnits(accountNo, consumerName, address, district, consumedUnits, year,month);
 	return output;
 	}
 
@@ -70,14 +78,32 @@ public class UnitServices {
 		String recordID = itemObject.get("recordID").getAsString();
 		String accountNo = itemObject.get("accountNo").getAsString();
 		String consumerName = itemObject.get("consumerName").getAsString();
-		String houseNo = itemObject.get("houseNo").getAsString();
+		String address = itemObject.get("address").getAsString();
 		String district = itemObject.get("district").getAsString();
 		String consumedUnits = itemObject.get("consumedUnits").getAsString();
-		String date = itemObject.get("date").getAsString();
+		String year = itemObject.get("year").getAsString();
+		String month = itemObject.get("month").getAsString();
 		
-		String output = readObj.updateUnit(recordID, accountNo, consumerName, houseNo, district, consumedUnits, date);
+		String output = readObj.updateUnit(recordID, accountNo, consumerName, address, district, consumedUnits, year, month);
 		
 		return output;
+	}
+	
+
+	
+	@DELETE
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteItem(String unitData)
+	{
+	//Convert the input string to an XML document
+	 Document doc = Jsoup.parse(unitData, "", Parser.xmlParser());
+
+	//Read the value from the element <itemID>
+	 String recordID = doc.select("recordID").text();
+	 String output = readObj.deleteUnit(recordID);
+	return output;
 	}
 	
 	
