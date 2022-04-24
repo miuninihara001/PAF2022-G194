@@ -76,7 +76,7 @@ public class Billing
 	 
 	 // Prepare the html table to be displayed
 	 
-	 output = "<table border='1'><tr><th>Account No</th><th>Month</th>" +
+	 output = "<table border='1'><tr><th>Bill No</th><th>Account No</th><th>Month</th>" +
 	 "<th>Units</th>" + 
 	 "<th>Amount</th>" +
 	 "<th>Date</th>"+
@@ -95,13 +95,14 @@ public class Billing
 	 String AccountNo = rs.getString("AccountNo"); 
 	 String Month = rs.getString("Month"); 
 	 String Units = Integer.toString(rs.getInt("Units")); 
-	 String Amount = Double.toString(rs.getDouble("Units")); 
+	 String Amount = Double.toString(rs.getDouble("Amount")); 
 	 String Date = rs.getString("Date");
 	 
-	 
+	
 	 // Add into the html table
 	 
-	 output += "<tr><td>" + AccountNo + "</td>"; 
+	 output += "<tr><td>" + Bill_ID + "</td>";
+	 output += "<td>" + AccountNo + "</td>"; 
 	 output += "<td>" + Month + "</td>"; 
 	 output += "<td>" + Units + "</td>"; 
 	 output += "<td>" + Amount + "</td>"; 
@@ -130,81 +131,81 @@ public class Billing
 	 return output; 
 	 } 
 	
-//	public String updateBillDetails(String billno, String accountNo, String month, String units, String amount, String date) 
-//	 
-//	 { 
-//	 String output = ""; 
-//	 try
-//	 { 
-//	 Connection con = connect(); 
-//	 if (con == null) 
-//	 {return "Error while connecting to the database for updating."; } 
-//	 
-//	 
-//	 // create a prepared statement
-//	 
-//	 String query = "UPDATE billing SET AccountNo=?,Month=?,Units=?,Amount=?, Date=? WHERE Bill_ID=?"; 
-//	 PreparedStatement preparedStmt = con.prepareStatement(query); 
-//	 
-//	 
-//	 // binding values
-//	 
-//	 preparedStmt.setString(1, accountNo); 
-//	 preparedStmt.setString(2, month); 
-//	 preparedStmt.setInt(3, Integer.parseInt(units)); 
-//	 preparedStmt.setString(4, amount); 
-//	 preparedStmt.setInt(5, Integer.parseInt(billno)); 
-//	 preparedStmt.setString(6, date); 
-//	 
-//	 
-//	 
-//	 // execute the statement
-//	 
-//	 preparedStmt.execute(); 
-//	 con.close(); 
-//	 output = "Updated successfully"; 
-//	 } 
-//	 catch (Exception e) 
-//	 { 
-//	 output = "Error while updating the Bill."; 
-//	 System.err.println(e.getMessage()); 
-//	 } 
-//	 return output; 
-//	 } 
-//	public String deleteBillDetails(String Bill_ID) 
-//	 { 
-//	 String output = ""; 
-//	 try
-//	 { 
-//	 Connection con = connect(); 
-//	 if (con == null) 
-//	 {return "Error while connecting to the database for deleting."; } 
-//	 
-//	 
-//	 // create a prepared statement
-//	 
-//	 String query = "delete from billing where Bill_ID=?"; 
-//	 PreparedStatement preparedStmt = con.prepareStatement(query); 
-//	 
-//	 
-//	 // binding values
-//	 
-//	 preparedStmt.setInt(1, Integer.parseInt(Bill_ID)); 
-//	 
-//	 
-//	 // execute the statement
-//	 
-//	 preparedStmt.execute(); 
-//	 con.close(); 
-//	 output = "Deleted successfully"; 
-//	 } 
-//	 catch (Exception e) 
-//	 { 
-//	 output = "Error while deleting the Bill."; 
-//	 System.err.println(e.getMessage()); 
-//	 } 
-//	 return output; 
-//	 } 
-//	
+	public String updateBillDetails(String billno, String accountNo, String month, String units, String amount, String date) 
+	 
+	 { 
+	 String output = ""; 
+	 try
+	 { 
+	 Connection con = connect(); 
+	 if (con == null) 
+	 {return "Error while connecting to the database for updating."; } 
+	 
+	 
+	 // create a prepared statement
+	 
+	 String query = "UPDATE billing SET AccountNo=?,Month=?,Units=?,Amount=?, Date=? WHERE Bill_ID=?"; 
+	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+	 
+	 
+	 // binding values
+	 
+	 preparedStmt.setString(1, accountNo); 
+	 preparedStmt.setString(2, month); 
+	 preparedStmt.setInt(3, Integer.parseInt(units)); 
+	 preparedStmt.setString(4, amount); 
+	 preparedStmt.setInt(5, Integer.parseInt(billno)); 
+	 preparedStmt.setString(6, date); 
+	 
+	 
+	 
+	 // execute the statement
+	 
+	 preparedStmt.execute(); 
+	 con.close(); 
+	 output = "Updated successfully"; 
+	 } 
+	 catch (Exception e) 
+	 { 
+	 output = "Error while updating the Bill."; 
+	 System.err.println(e.getMessage()); 
+	 } 
+	 return output; 
+	 } 
+	public String deleteBillDetails(String Bill_ID) 
+	 { 
+	 String output = ""; 
+	 try
+	 { 
+	 Connection con = connect(); 
+	 if (con == null) 
+	 {return "Error while connecting to the database for deleting."; } 
+	 
+	 
+	 // create a prepared statement
+	 
+	 String query = "delete from billing where Bill_ID=?"; 
+	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+	 
+	 
+	 // binding values
+	 
+	 preparedStmt.setInt(1, Integer.parseInt(Bill_ID)); 
+	 
+	 
+	 // execute the statement
+	 
+	 preparedStmt.execute(); 
+	 con.close(); 
+	 output = "Deleted successfully"; 
+	 } 
+	 catch (Exception e) 
+	 { 
+	 output = "Error while deleting the Bill."; 
+	 System.err.println(e.getMessage()); 
+	 } 
+	 return output; 
+	 } 
+	
 
 }
