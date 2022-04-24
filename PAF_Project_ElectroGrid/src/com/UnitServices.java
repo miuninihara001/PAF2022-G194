@@ -10,6 +10,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 //import org.jsoup.Jsoup;
 //import org.jsoup.nodes.Document;
 //import org.jsoup.parser.Parser;
@@ -51,6 +54,32 @@ public class UnitServices {
 	 {
 	 return readObj.readUnits();
 	}
+	
+	
+	
+	@PUT
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateUnit(String unitData)
+	{
+		//Convert the input string to a JSON object
+		JsonObject itemObject = new JsonParser().parse(unitData).getAsJsonObject();
+		
+		//Read the values from the JSON object
+		String recordID = itemObject.get("recordID").getAsString();
+		String accountNo = itemObject.get("accountNo").getAsString();
+		String consumerName = itemObject.get("consumerName").getAsString();
+		String houseNo = itemObject.get("houseNo").getAsString();
+		String district = itemObject.get("district").getAsString();
+		String consumedUnits = itemObject.get("consumedUnits").getAsString();
+		String date = itemObject.get("date").getAsString();
+		
+		String output = readObj.updateUnit(recordID, accountNo, consumerName, houseNo, district, consumedUnits, date);
+		
+		return output;
+	}
+	
 	
 	
 	

@@ -17,7 +17,7 @@ public class Units {
 		 Class.forName("com.mysql.jdbc.Driver");
 
 		 //Provide the correct details: DBServer/DBName, username, password
-		 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/eg", "root", "");
+		 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/electrogrid-db", "root", "");
 	 }
 	 catch (Exception e)
 	 {
@@ -57,7 +57,7 @@ public class Units {
 	 
 	 		preparedStmt.execute();
 	 		con.close();
-	 		output = "Inserted successfully";
+	 		output = "Unit Record Inserted successfully";
 	 }
 	 catch (Exception e)
 	 {
@@ -109,9 +109,9 @@ public class Units {
 		 output += "<td>" + consumedUnits + "</td>";
 		 output += "<td>" + date + "</td>";
 		 // buttons
-//		 output += "<td><input name='btnUpdate' type='button' value='Update'class='btn btn-secondary'></td>"+ "<td><form method='post' action='items.jsp'>"+ "<input name='btnRemove' type='submit' value='Remove'class='btn btn-danger'>"
-//		+ "<input name='itemID' type='hidden' value='" + itemID
-//		+ "'>" + "</form></td></tr>";
+		 output += "<td><input name='btnUpdate' type='button' value='Update'class='btn btn-secondary'></td>"+ "<td><form method='post' action='records.jsp'>"+ "<input name='btnRemove' type='submit' value='Remove'class='btn btn-danger'>"
+		+ "<input name='recordID' type='hidden' value='" + recordID
+		+ "'>" + "</form></td></tr>";
 		 
 	 }
 	 	con.close();
@@ -120,11 +120,55 @@ public class Units {
 	 }
 	 		catch (Exception e)
 	 {
-	 		output = "Error while reading the items.";
+	 		output = "Error while reading the records.";
 	 		System.err.println(e.getMessage());
 	 }
 	 		return output;
 	 }
+	
+	
+	
+	
+	
+	public String updateUnit(String ID, String acc, String name, String house, String district, String units, String date)
+	
+	{
+		 String output = "";
+		 try
+		 {
+			 Connection con = connect();
+			 if (con == null)
+			 {
+				 return "Error while connecting to the database for updating."; 
+			 }
+			 
+		 // create a prepared statement
+		 String query = "UPDATE unitrecords SET accountNo=?,consumerName=?,houseNo=?,district=?,consumedUnits=?,date=? WHERE recordID=?";
+		 PreparedStatement preparedStmt = con.prepareStatement(query);
+		 
+		 // binding values
+		 	preparedStmt.setString(1, acc);
+	 		preparedStmt.setString(2, name);
+	 		preparedStmt.setString(3, house);
+	 		preparedStmt.setString(3, district);
+	 		preparedStmt.setInt(4, Integer.parseInt(units));
+	 		preparedStmt.setString(5, date);
+	 		preparedStmt.setInt(6, Integer.parseInt(ID));
+		 
+		 // execute the statement
+		 preparedStmt.execute();
+		 con.close();
+		 
+		 output = "The Record Updated Successfully";
+		 }
+		 		catch (Exception e)
+		 {
+		 		output = "Error while updating the item.";
+		 		System.err.println(e.getMessage());
+		 }
+		 
+		 return output;
+	}
 	
 	
 
