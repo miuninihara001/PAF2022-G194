@@ -59,14 +59,15 @@ public class CunsumptionService {
 		@Path("/") 
 		@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 		@Produces(MediaType.TEXT_PLAIN) 
+		
 		public String insertconsumption(@FormParam("Dname") String Dname, 
-		 @FormParam("DZipCode") String DZipCode, 
-		 @FormParam("DUsedUnits") String DUsedUnits, 
-		 @FormParam("Month") String Month,
-		 @FormParam("Note") String Note) 
+		   @FormParam("DZipCode") String DZipCode, 
+		   @FormParam("DUsedUnits") String DUsedUnits, 
+		   @FormParam("Month") String Month,
+		   @FormParam("Note") String Note) 
 		{ 
 		 String output = consumpObj.insertconsumption(Dname, DZipCode, DUsedUnits, Month, Note); 
-		return output; 
+		 return output; 
 		}
 
 		
@@ -76,8 +77,12 @@ public class CunsumptionService {
 		@Produces(MediaType.TEXT_PLAIN) 
 		public String updateCunsumption(String consumptionData) 
 		{ 
+			
+			
 		//Convert the input string to a JSON object 
 		 JsonObject ConObject1 = new JsonParser().parse(consumptionData).getAsJsonObject(); 
+		 
+		 
 		 
 		//Read the values from the JSON object
 		 String ID =ConObject1.get("ID").getAsString(); 
@@ -88,7 +93,7 @@ public class CunsumptionService {
 		 String Note = ConObject1.get("Note").getAsString(); 
 		 
 		 String output = consumpObj.updateCunsumption(ID, Dname, DZipCode, DUsedUnits,Month, Note); 
-		return output; 
+		 return output; 
 		}
 		
 		
@@ -108,9 +113,17 @@ public class CunsumptionService {
 		 String output = consumpObj.deleteCunsumption(ID); 
 		return output; 
 		}
+	
+		//search
 		
-		
-		
-		
+		@GET
+		@Path("/search")
+		@Produces(MediaType.TEXT_HTML)
+		public String searchCunsumption(String consumptionData) {
+			Document doc = Jsoup.parse(consumptionData, "", Parser.xmlParser()); 
+			String ID = doc.select("Dname").text(); 
+			
+			return consumpObj.searchCunsumption(Dname);
+		}
 		
 }
