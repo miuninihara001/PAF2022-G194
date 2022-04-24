@@ -53,13 +53,13 @@ public class Units {
 	 		preparedStmt.setString(5, district);
 	 		preparedStmt.setInt(6, units);
 	 		preparedStmt.setString(7, year);
-	 		preparedStmt.setString(7, month);
+	 		preparedStmt.setString(8, month);
 	 		
 	 		// execute the statement
 	 
 	 		preparedStmt.execute();
 	 		con.close();
-	 		output = "Unit Record Inserted successfully";
+	 		output = "Unit Record Inserted successfully!!!";
 	 }
 	 catch (Exception e)
 	 {
@@ -86,7 +86,7 @@ public class Units {
 		 
 	 // Prepare the html table to be displayed
 	 output = "<table border='1'><tr><th>AccountNO</th><th>Consumer Name</th>" +"<th>Address</th>" +
-	 "<th>District</th>" + "<th>Consumed Units</th>" +"<th>Year</th>" + "<th>Month</th></tr>";
+	 "<th>District</th>" + "<th>Consumed Units</th>" +"<th>Year</th>" + "<th>Month</th>"+"<th>Update</th>"+"<th>Delete</th></tr>";
 
 	 String query = "select * from unitrecords";
 	 Statement stmt = con.createStatement();
@@ -113,7 +113,7 @@ public class Units {
 		 output += "<td>" + year + "</td>";
 		 output += "<td>" + month + "</td>";
 		 // buttons
-		 output += "<td><input name='btnUpdate' type='button' value='Update'class='btn btn-secondary'></td>"+ "<td><form method='post' action='records.jsp'>"+ "<input name='btnRemove' type='submit' value='Remove'class='btn btn-danger'>"
+		 output += "<td><input name='btnUpdate' type='button' value='Update'></td>"+"<td>"+ "<input name='btnRemove' type='submit' value='Remove'>"
 		+ "<input name='recordID' type='hidden' value='" + recordID
 		+ "'>" + "</form></td></tr>";
 		 
@@ -153,11 +153,11 @@ public class Units {
 		 	preparedStmt.setString(1, acc);
 	 		preparedStmt.setString(2, name);
 	 		preparedStmt.setString(3, address);
-	 		preparedStmt.setString(3, district);
-	 		preparedStmt.setInt(4, Integer.parseInt(units));
-	 		preparedStmt.setString(5, year);
-	 		preparedStmt.setString(5, month);
-	 		preparedStmt.setInt(6, Integer.parseInt(ID));
+	 		preparedStmt.setString(4, district);
+	 		preparedStmt.setInt(5, Integer.parseInt(units));
+	 		preparedStmt.setString(6, year);
+	 		preparedStmt.setString(7, month);
+	 		preparedStmt.setInt(8, Integer.parseInt(ID));
 		 
 		 // execute the statement
 		 preparedStmt.execute();
@@ -167,7 +167,7 @@ public class Units {
 		 }
 		 		catch (Exception e)
 		 {
-		 		output = "Error while updating the item.";
+		 		output = "Error while updating the Record !!!.";
 		 		System.err.println(e.getMessage());
 		 }
 		 
@@ -211,6 +211,60 @@ public class Units {
 	 
 	 }
 	
+
+
+public String searchConnection(String accountNo) {
 	
+	String output="";
+	try{ 
+		Connection con = connect(); 
+		if (con == null)  {
+			return "Error while connecting to the database";
+			} 
+			
+			output = "<html>"+"<table border='1'><tr>"
+					+ "<th>accountNo</th>"+
+					"<th>consumerName</th>"+
+					"<th>address</th>" +
+					"<th>district</th>" +
+					"<th>consumedUnits</th>" +
+					"<th>year</th>" +
+					"<th>month</th></tr>"; 
+
+		// create a prepared statement
+		String query = "select * from unitrecords where accountNo='"+accountNo+"'"; 
+		Statement stmt = con.createStatement(); 
+	 	ResultSet rs = stmt.executeQuery(query);
+	 	while(rs.next()) {
+	 		String consumerName = rs.getString("consumerName"); 
+			String address = rs.getString("address");
+			String district= rs.getString("district"); 
+			String consumedUnits = rs.getString("consumedUnits");
+			String year = rs.getString("year");
+			String month = rs.getString("month");
+			
+			output += "<td>" + accountNo + "</td>"; 
+				output += "<td>" + consumerName + "</td>"; 
+				output += "<td>" + address + "</td>"; 
+				output += "<td>" + district + "</td>"; 
+				output += "<td>" + consumedUnits + "</td>"; 
+				output += "<td>" + year + "</td>"; 
+				output += "<td>" + month + "</td></tr>"; 
+	 	}
+		con.close(); 
+ 
+			output += "</table></html>"; 
+	} 
+	catch (Exception e) { 
+		output = "Error while searching"; 
+		System.err.println(e.getMessage()); 
+	} 
+	return output;
+
+
+}
+
+
+
 
 }

@@ -54,7 +54,6 @@ public class UnitServices {
 
 	
 	
-	
 	@GET
 	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
@@ -62,7 +61,6 @@ public class UnitServices {
 	 {
 	 return readObj.readUnits();
 	}
-	
 	
 	
 	
@@ -108,6 +106,15 @@ public class UnitServices {
 	}
 	
 	
-	
+
+
+	@GET
+	@Path("/searchUnits")
+	@Produces(MediaType.TEXT_HTML)
+	public String searchConnection(String unitData) {
+			Document doc = Jsoup.parse(unitData, "", Parser.xmlParser()); 
+			String accountNo = doc.select("accountNo").text(); 
+			return readObj.searchConnection(accountNo);
+	}
 	
 }
