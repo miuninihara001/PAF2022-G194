@@ -91,4 +91,15 @@ public class BillingService {
 	}
 
 	
+	
+	
+	@GET
+	@Path("/search")
+	@Produces(MediaType.TEXT_HTML)
+	public String searchBills(String billingDatata) {
+		Document doc = Jsoup.parse(billingDatata, "", Parser.xmlParser()); 
+		String Bill_ID = doc.select("Bill_ID").text(); 
+		
+		return BillObj.searchBills(Bill_ID);
+	}
 }
