@@ -127,6 +127,60 @@ public class Schedule {
 		return output;
 	}
 	
+	
+	
+public String searchSchedules(String lineno) {
+		
+		String output="";
+		try{ 
+			Connection con = connect(); 
+			if (con == null)  {
+				return "Error while connecting to the database";
+				} 
+				
+				output ="<table border='1'><tr><th>Line No</th>"+
+						"<th>Area No</th>"+
+						"<th>Area Name</th>" +
+						"<th>Starting Time</th>" +
+						"<th>Ending Time</th>" +
+						"<th>Date</th>" +
+						"<th>Reason</th></tr>"; 
+
+			// create a prepared statement
+			String query = "select * from shedules where lineNo='"+lineno+"'"; 
+			Statement stmt = con.createStatement(); 
+		 	ResultSet rs = stmt.executeQuery(query);
+		 	while(rs.next()) {
+		 		String areano = rs.getString("areano"); 
+		 		String areaname = rs.getString("areaname"); 
+				String starttime = rs.getString("starttime");
+				String endtime = rs.getString("endtime"); 
+				String date = rs.getString("date");
+				String reason = rs.getString("reason");
+				
+				output += "<td>" + lineno + "</td>"; 
+ 				output += "<td>" + areano + "</td>"; 
+ 				output += "<td>" + areaname + "</td>"; 
+ 				output += "<td>" + starttime + "</td>"; 
+ 				output += "<td>" + endtime + "</td>"; 
+ 				output += "<td>" + date + "</td>"; 
+ 				output += "<td>" + reason + "</td></tr>"; 
+
+				
+		 	}
+			
+			con.close(); 
+	 
+				output += "</table></html>"; 
+
+		} 
+		catch (Exception e) { 
+			output = "Error while searching"; 
+			System.err.println(e.getMessage()); 
+		} 
+		return output;
+		
+}	
 public String updateSchedule(String ID, String lineno, String areano, String areaname, String starttime, String endtime, String date, String reason) {
 		
 		String output = "";

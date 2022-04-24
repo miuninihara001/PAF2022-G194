@@ -1,5 +1,13 @@
 package com;
 import model.Schedule;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -43,10 +51,44 @@ public class ScheduleService {
 				@FormParam("startTime") String startTime,
 				@FormParam("endTime") String endTime,
 				@FormParam("date") String date,
-				@FormParam("reason") String reason)
+				@FormParam("reason") String reason) throws ParseException,DateTimeParseException,NullPointerException
 	{
-		String output = scheduleObj.InsertPowerCutDetails(lineNo, areaNo, areaName, startTime, endTime, date, reason);
+		
+		String output="";
+		Boolean Sdate= false;
+		
+	    SimpleDateFormat sdfrmt = new SimpleDateFormat("MM/dd/yyyy");
+	    sdfrmt.setLenient(false);
+	    
+	    try {
+	    	Date javaDate = sdfrmt.parse(date);
+	    	System.out.println(Sdate+" is valid date format");
+	    	
+	    		
+	    }catch(ParseException e) {
+	    	
+	    	System.out.println(Sdate+" is Invalid Date format");
+	    	output="Incorrect date formate";
+	    }
+	    if(Sdate == true) {
+	    	DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+	    	String createdate = df.format(date);
+	    	output = scheduleObj.InsertPowerCutDetails(lineNo, areaNo, areaName, startTime, endTime, date, reason);
+	    }
+		
+		
+		
 		return output;
+	}
+	
+	
+	@GET
+	@Path("/searchSchedules")
+	@Produces(MediaType.TEXT_HTML)
+	public String searchNotices(String scheduleData) {
+		Document doc = Jsoup.parse(scheduleData, "", Parser.xmlParser()); 
+		String lineno = doc.select("lineno").text(); 
+		return scheduleObj.searchSchedules(lineno);
 	}
 	
 	
