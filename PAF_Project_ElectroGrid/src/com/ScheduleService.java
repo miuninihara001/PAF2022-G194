@@ -51,34 +51,19 @@ public class ScheduleService {
 				@FormParam("startTime") String startTime,
 				@FormParam("endTime") String endTime,
 				@FormParam("date") String date,
-				@FormParam("reason") String reason) throws ParseException,DateTimeParseException,NullPointerException
+				@FormParam("reason") String reason) 
 	{
 		
-		String output="";
-		Boolean Sdate= false;
-		
-	    SimpleDateFormat sdfrmt = new SimpleDateFormat("MM/dd/yyyy");
-	    sdfrmt.setLenient(false);
-	    
-	    try {
-	    	Date javaDate = sdfrmt.parse(date);
-	    	System.out.println(Sdate+" is valid date format");
-	    	
-	    		
-	    }catch(ParseException e) {
-	    	
-	    	System.out.println(Sdate+" is Invalid Date format");
-	    	output="Incorrect date formate";
-	    }
-	    if(Sdate == true) {
-	    	DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-	    	String createdate = df.format(date);
-	    	output = scheduleObj.InsertPowerCutDetails(lineNo, areaNo, areaName, startTime, endTime, date, reason);
-	    }
-		
-		
-		
-		return output;
+			if(lineNo.isEmpty()||areaNo.isEmpty()||areaName.isEmpty()||startTime.isEmpty()||endTime.isEmpty()||date.isEmpty()||reason.isEmpty()) {
+					return "All the Fields Sholud be inserted";			
+			}else if(lineNo.length() != 8) {
+					return "Line NO should consist of 8 characters";
+			}else if(areaNo.length() !=4) {
+					return "Area No should be consist of 4 characters ";
+			}
+
+	    	String output = scheduleObj.InsertPowerCutDetails(lineNo, areaNo, areaName, startTime, endTime, date, reason);
+	    	return output;
 	}
 	
 	
@@ -112,6 +97,14 @@ public class ScheduleService {
 		String date = scheduleObject.get("date").getAsString();
 		String reason = scheduleObject.get("reason").getAsString();
 		
+		
+		if(lineNo.isEmpty()||areaNo.isEmpty()||areaName.isEmpty()||startTime.isEmpty()||endTime.isEmpty()||date.isEmpty()||reason.isEmpty()) {
+			return "All the Fields Should be inserted";			
+		}else if(lineNo.length() != 8) {
+			return "Line NO should consist of 8 characters";
+		}else if(areaNo.length() !=4) {
+			return "Area No should be consist of 4 characters ";
+		}
 		String output = scheduleObj.updateSchedule(sheduleId, lineNo, areaNo, areaName, startTime, endTime, date, reason );
 		
 		return output;
