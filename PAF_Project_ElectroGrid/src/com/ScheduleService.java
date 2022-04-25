@@ -31,16 +31,16 @@ public class ScheduleService {
 	
 	Schedule scheduleObj = new Schedule();
 	@GET
-	@Path("/readSchedules")
+	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
-	public String readItems()
+	public String readPowerCutDetails()
 	{
 		return scheduleObj.readPowerCutDetails();
 	}
 	
 	
 	@POST
-	@Path("/insertSchedules")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 	
@@ -53,7 +53,6 @@ public class ScheduleService {
 				@FormParam("reason") String reason) 
 	{
 			
-		
 			if(lineNo.isEmpty()||areaNo.isEmpty()||areaName.isEmpty()||startTime.isEmpty()||endTime.isEmpty()||date.isEmpty()||reason.isEmpty()) {
 					return "All the Fields Should be inserted";			
 			}else if(lineNo.length() != 8) {
@@ -70,9 +69,9 @@ public class ScheduleService {
 	
 	
 	@GET
-	@Path("/searchSchedules")
+	@Path("/searchSchedule")
 	@Produces(MediaType.TEXT_HTML)
-	public String searchNotices(String scheduleData) {
+	public String searchSchedules(String scheduleData) {
 		Document doc = Jsoup.parse(scheduleData, "", Parser.xmlParser()); 
 		String lineno = doc.select("lineno").text(); 
 		return scheduleObj.searchSchedules(lineno);
@@ -80,7 +79,7 @@ public class ScheduleService {
 	
 	
 	@PUT
-	@Path("/updateSchedules")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	
@@ -113,7 +112,7 @@ public class ScheduleService {
 	}
 	
 	@DELETE
-	@Path("/deleteSchedules")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String deleteShedule(String sheduleData)
