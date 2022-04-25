@@ -25,6 +25,10 @@ public class Billing
 	
 	
 	//Insert Function
+	// since manager insert only account Number, month and date
+	//amount should be Calculated
+	//Units will be get by GetUnit Method
+	
 	
 	public String insertBillDetails(String accountNo, String month,String date) 
 	 {
@@ -37,7 +41,9 @@ public class Billing
 	 {return "Error while connecting to the database for inserting."; } 
 	 
 	 int units = Integer.parseInt(GetUnits(accountNo,month));
+	
 	 
+	 //Calculate Amount
 	 
 	 Double amount = 0.0;
 	 
@@ -91,6 +97,9 @@ public class Billing
 	 } 
 	 return output; 
 	 } 
+	
+	
+	// GetUnits Method for get the Units consumed by customer from Units Record table
 	
 	 public String GetUnits(String accountNo, String month) {
 		 String output="";
@@ -272,7 +281,9 @@ public class Billing
 	 } 
 	
 	
-public String searchBills(String billno) {
+	// Search Function
+	
+public String searchBills(String Bill_ID) {
 		
 		String output="";
 		try{ 
@@ -290,21 +301,21 @@ public String searchBills(String billno) {
 						"<th>Date</th>" ; 
 
 			// create a prepared statement
-			String query = "select * from billing where Bill_ID='"+billno+"'"; 
+			String query = "select * from billing where Bill_ID='"+Bill_ID+"'"; 
 			Statement stmt = con.createStatement(); 
 		 	ResultSet rs = stmt.executeQuery(query);
 		 	while(rs.next()) {
-		 		//String AccountNum = rs.getString("AccountNum"); 
-		 		String Bill_ID = rs.getString("Bill_ID"); 
-				String AcountNo = rs.getString("AcountNo");
+		 		
+		 		//String Bill_ID = rs.getString("Bill_ID"); 
+				String AccountNo = rs.getString("AccountNo");
 				String Month= rs.getString("Month"); 
 				String Units = rs.getString("Units");
 				String Amount = rs.getString("Amount");
 				String Date = rs.getString("Date");
 			
 				
-				output += "<td>" + Bill_ID + "</td>"; 
- 				output += "<td>" + AcountNo + "</td>"; 
+				output += "<td>" +  Bill_ID+ "</td>"; 
+ 				output += "<td>" + AccountNo + "</td>"; 
  				output += "<td>" + Month + "</td>"; 
  				output += "<td>" + Units + "</td>"; 
  				output += "<td>" + Amount + "</td>"; 
@@ -316,7 +327,7 @@ public String searchBills(String billno) {
 			
 			con.close(); 
 	 
-				output += "</table></html>"; 
+				output += "</table>"; 
 
 		} 
 		catch (Exception e) { 
