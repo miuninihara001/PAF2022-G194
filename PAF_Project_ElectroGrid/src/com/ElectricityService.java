@@ -49,6 +49,32 @@ public class ElectricityService {
 									@FormParam("Address") String Address,
 									@FormParam("WiringType") String WiringType)
 	{
+		if(AccountNum.isEmpty()||LineNum.isEmpty()||ClientName.isEmpty()||NIC.isEmpty()||ConnecType.isEmpty()||Email.isEmpty()||Address.isEmpty()||WiringType.isEmpty())
+		{
+			 return "All fields must be filled out";
+		}
+	
+	{
+		 if(AccountNum.length()!=5) {
+			 return "Accounnt number length must be 5 characters long";
+		 }
+		
+	}
+	
+	
+	{
+		 if(LineNum.length()!=5) {
+			 return "Line number length must be 5 characters long";
+		 }
+		
+	}
+	
+	{
+		 if(NIC.length()!=10) {
+			 return "Invalid NIC number";
+		 }
+		
+	}
 			String output = eleconnec.insertNewConnection(AccountNum, LineNum, ClientName, NIC,ConnecType,Email,Address,WiringType);
 			return output;
 	}
@@ -73,6 +99,33 @@ public class ElectricityService {
 			String Email = ConObject.get("Email").getAsString();
 			String Address = ConObject.get("Address").getAsString();
 			String WiringType = ConObject.get("WiringType").getAsString();
+			
+			if(AccountNum.isEmpty()||LineNum.isEmpty()||ClientName.isEmpty()||NIC.isEmpty()||ConnecType.isEmpty()||Email.isEmpty()||Address.isEmpty()||WiringType.isEmpty())
+			{
+				 return "All fields must be filled out";
+			}
+			
+			{
+				 if(AccountNum.length()!=5) {
+					 return "Accounnt number length must be 5 characters long";
+				 }
+				
+			}
+			
+			
+			{
+				 if(LineNum.length()!=5) {
+					 return "Line number length must be 5 characters long";
+				 }
+				
+			}
+			
+			{
+				 if(NIC.length()!=10) {
+					 return "Invalid NIC number";
+				 }
+				
+			}
 	 
 			String output = eleconnec.updateConnections(ConCode, AccountNum, LineNum, ClientName, NIC,ConnecType,Email,Address,WiringType);
 	 
