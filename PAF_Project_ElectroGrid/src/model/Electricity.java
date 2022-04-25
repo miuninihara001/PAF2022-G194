@@ -20,6 +20,7 @@ public class Electricity {
 				return con;
 	 } 
 	
+	
 	//insert new electricity connection
 	
 	public String insertNewConnection(String AccountNum, String LineNum, String ClientName, String NIC, String ConnecType, String Email, String Address, String WiringType)
@@ -53,13 +54,16 @@ public class Electricity {
 			}
 			catch (Exception e)
 			{
-				output = "Error while inserting the item.";
-	 			System.err.println(e.getMessage());
+				//output = "Error while inserting the item.";
+	 			//System.err.println(e.getMessage());
+				output = e.getMessage();
 			}
 			return output;
 	 }
 	
 	
+	
+	//read electricity connections
 	
 	public String readConnections()
 	 {
@@ -118,6 +122,7 @@ public class Electricity {
 	 } 
 	
 	
+	//update electricity connection
 	
 	public String updateConnections(String ConCode,String AccountNum, String LineNum, String ClientName, String NIC, String ConnecType, String Email, String Address, String WiringType)
 	{
@@ -153,6 +158,9 @@ public class Electricity {
 			return output;
 	} 
 	
+	
+	//delete electricity connection
+	
 	public String deleteConnection(String ConCode)
 	 {
 			String output = "";
@@ -179,6 +187,8 @@ public class Electricity {
 			return output;
 	 }
 	
+	
+	//search electricity connection
 	
 public String searchConnection(String AccountNum) {
 		

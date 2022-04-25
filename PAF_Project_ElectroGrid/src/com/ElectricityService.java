@@ -36,6 +36,8 @@ public class ElectricityService {
 	 } 
 
 	
+	
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -78,6 +80,8 @@ public class ElectricityService {
 			String output = eleconnec.insertNewConnection(AccountNum, LineNum, ClientName, NIC,ConnecType,Email,Address,WiringType);
 			return output;
 	}
+	
+	
 	
 	
 	
@@ -133,6 +137,8 @@ public class ElectricityService {
 	}
 	
 	
+	
+	
 	@DELETE
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
@@ -149,6 +155,7 @@ public class ElectricityService {
 	}
 
 
+	
 	
 		@GET
 		@Path("/searcheConnection")
