@@ -1,11 +1,10 @@
 package com;
 import model.Schedule;
 
-import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
+
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
@@ -32,7 +31,7 @@ public class ScheduleService {
 	
 	Schedule scheduleObj = new Schedule();
 	@GET
-	@Path("/")
+	@Path("/readSchedules")
 	@Produces(MediaType.TEXT_HTML)
 	public String readItems()
 	{
@@ -41,7 +40,7 @@ public class ScheduleService {
 	
 	
 	@POST
-	@Path("/")
+	@Path("/insertSchedules")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 	
@@ -53,17 +52,20 @@ public class ScheduleService {
 				@FormParam("date") String date,
 				@FormParam("reason") String reason) 
 	{
+			
 		
 			if(lineNo.isEmpty()||areaNo.isEmpty()||areaName.isEmpty()||startTime.isEmpty()||endTime.isEmpty()||date.isEmpty()||reason.isEmpty()) {
-					return "All the Fields Sholud be inserted";			
+					return "All the Fields Should be inserted";			
 			}else if(lineNo.length() != 8) {
 					return "Line NO should consist of 8 characters";
 			}else if(areaNo.length() !=4) {
 					return "Area No should be consist of 4 characters ";
 			}
-
-	    	String output = scheduleObj.InsertPowerCutDetails(lineNo, areaNo, areaName, startTime, endTime, date, reason);
-	    	return output;
+			
+		
+		    	String output = scheduleObj.InsertPowerCutDetails(lineNo, areaNo, areaName, startTime, endTime, date, reason);
+		    	return output;
+		    
 	}
 	
 	
@@ -78,7 +80,7 @@ public class ScheduleService {
 	
 	
 	@PUT
-	@Path("/")
+	@Path("/updateSchedules")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	
@@ -111,7 +113,7 @@ public class ScheduleService {
 	}
 	
 	@DELETE
-	@Path("/")
+	@Path("/deleteSchedules")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String deleteShedule(String sheduleData)
