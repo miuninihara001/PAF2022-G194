@@ -44,12 +44,30 @@ public class BillingService {
 									@FormParam("Month") String Month, 
 									@FormParam("Date") String Date)
 	
-	{ 
 	
+	
+	{ 
+		//inserting validations
+				
+					if(AccountNo.isEmpty()||Month.isEmpty()||Date.isEmpty())
+					{
+						 return "All the Bill Details must be filled out";
+					}
+				
+					else if(Month.length()>20) {
+						 return "Invalide Value Inserted";
+					 }
+					else if (Date.length()!=10) {
+						return "Invalid format";
+					}
+					
+			 
 	String output = BillObj.insertBillDetails(AccountNo, Month, Date); 
 	return output; 
 	}
 	
+	
+//Update Function
 	
 	@PUT
 	@Path("/") 
