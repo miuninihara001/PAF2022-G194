@@ -5,8 +5,8 @@ import java.sql.*;
 public class Cunsumption 
 { 
 	//A common method to connect to the DB
-  private Connection connect() 
-   { 
+    private Connection connect() 
+      { 
            Connection con = null; 
            try
               { 
@@ -18,99 +18,108 @@ public class Cunsumption
            catch (Exception e) 
              {e.printStackTrace();} 
            return con; 
-   } 
- public String insertconsumption(String Dname, String DZipCode, String DUsedUnits,String Month, String Note) 
+    } 
+    
+  public String insertconsumption(String Dname, String DZipCode, String DUsedUnits,String Month, String Note) 
   { 
    String output = ""; 
- try
+   
+  try
   { 
-    Connection con = connect(); 
- if (con == null) 
- {return "Error while connecting to the database for inserting."; } 
+    Connection con = connect();
+    
+  if (con == null) 
+  {return "Error while connecting to the database for inserting."; } 
  
  // create a prepared statement
  String query = " insert into consumption(`ID`,`Dname`,`DZipCode`,`DUsedUnits`,`Month` ,`Note`)"
  + " values (?, ?, ?, ?, ?, ?)"; 
  
- PreparedStatement preparedStmt = con.prepareStatement(query); 
+       PreparedStatement preparedStmt = con.prepareStatement(query); 
  // binding values
- preparedStmt.setInt(1, 0); 
- preparedStmt.setString(2, Dname); 
- preparedStmt.setString(3, DZipCode); 
- preparedStmt.setDouble(4, Double.parseDouble(DUsedUnits)); 
- preparedStmt.setString(5, Month);
- preparedStmt.setString(6, Note); 
+            preparedStmt.setInt(1, 0); 
+            preparedStmt.setString(2, Dname); 
+            preparedStmt.setString(3, DZipCode); 
+            preparedStmt.setDouble(4, Double.parseDouble(DUsedUnits)); 
+            preparedStmt.setString(5, Month);
+            preparedStmt.setString(6, Note); 
  
 //execute the statement
 
- preparedStmt.execute(); 
- con.close(); 
- output = "Inserted successfully"; 
+            preparedStmt.execute(); 
+  con.close(); 
+  output = "Inserted successfully"; 
  } 
- catch (Exception e) 
+  catch (Exception e) 
  { 
       output = "Error while inserting the Details."; 
       System.err.println(e.getMessage()); 
  } 
- return output; 
+  return output; 
  
  }
 
- public String readCunsumption() 
+  public String readCunsumption() 
  { 
  String output = ""; 
- try
+  try
  { 
  Connection con = connect(); 
- if (con == null) 
+  if (con == null) 
  {return "Error while connecting to the database for reading."; } 
  
  // Prepare the html table to be displayed
- output = "<table border='1'><tr><th>ID</th><th>Dname</th><th>DZipCode</th>" +
- "<th>DUsedUnits</th>" + 
- "<th>Month</th>" + 
- "<th>Note</th>" +
- "<th>Update</th><th>Remove</th></tr>"; 
+  
+  
+   output = "<table border='1'><tr><th>ID</th><th>Dname</th><th>DZipCode</th>" +
+   "<th>DUsedUnits</th>" + 
+   "<th>Month</th>" + 
+   "<th>Note</th>" +
+   "<th>Update</th><th>Remove</th></tr>"; 
  
- String query = "select * from 	consumption	"; 
- Statement stmt = con.createStatement(); 
- ResultSet rs = stmt.executeQuery(query); 
+  String query = "select * from 	consumption	"; 
+  Statement stmt = con.createStatement(); 
+  ResultSet rs = stmt.executeQuery(query); 
  // iterate through the rows in the result set
- while (rs.next()) 
- { 
- String ID = Integer.toString(rs.getInt("ID")); 
- String Dname = rs.getString("Dname"); 
- String DZipCode = rs.getString("DZipCode"); 
- String DUsedUnits = Double.toString(rs.getDouble("DUsedUnits")); 
- String Month = rs.getString("Month");
- String Note = rs.getString("Note"); 
+    while (rs.next()) 
+    { 
+       String ID = Integer.toString(rs.getInt("ID")); 
+       String Dname = rs.getString("Dname"); 
+       String DZipCode = rs.getString("DZipCode"); 
+       String DUsedUnits = Double.toString(rs.getDouble("DUsedUnits")); 
+       String Month = rs.getString("Month");
+       String Note = rs.getString("Note"); 
  
  // Add into the html table
+       
  output += "<tr><td>" + ID + "</td>";
  output += "<td>" + Dname + "</td>"; 
  output += "<td>" + DZipCode + "</td>"; 
  output += "<td>" + DUsedUnits + "</td>"; 
  output += "<td>" + Month + "</td>";
  output += "<td>" + Note + "</td>"; 
+ 
+ 
  // buttons
+ 
  output += "<td><input name='btnUpdate' type='button' value='Update'nclass='btn btn-secondary'></td>"
  + "<td><form method='post' action='items.jsp'>"
  + "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
  + "<input name='ID' type='hidden' value='" + ID 
  + "'>" + "</form></td></tr>"; 
  } 
- con.close(); 
+      con.close(); 
  // Complete the html table
- output += "</table>"; 
+           output += "</table>"; 
  } 
- catch (Exception e) 
+   catch (Exception e) 
  { 
  output = "Error while reading the details."; 
  System.err.println(e.getMessage()); 
  } 
- return output; 
+   return output; 
  } 
-public String updateCunsumption(String ID, String Dname, String DZipCode, String DUsedUnits,String Month, String Note) 
+    public String updateCunsumption(String ID, String Dname, String DZipCode, String DUsedUnits, String Month, String Note) 
 
 { 
 	 String output = ""; 
@@ -122,6 +131,8 @@ public String updateCunsumption(String ID, String Dname, String DZipCode, String
 	 // create a prepared statement
 	 String query = "UPDATE consumption SET Dname=?,DZipCode=?,DUsedUnits=?,Month=?,Note=? WHERE ID=?"; 
 	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+	
+	 
 	 // binding values
 	 preparedStmt.setString(1, Dname); 
 	 preparedStmt.setString(2, DZipCode); 
@@ -129,6 +140,8 @@ public String updateCunsumption(String ID, String Dname, String DZipCode, String
 	 preparedStmt.setString(4, Month);
 	 preparedStmt.setString(5, Note); 
 	 preparedStmt.setInt(6, Integer.parseInt(ID)); 
+	 
+	 
 	 // execute the statement
 	 preparedStmt.execute(); 
 	 con.close(); 
@@ -151,12 +164,15 @@ public String updateCunsumption(String ID, String Dname, String DZipCode, String
 	 if (con == null) 
 	 {return "Error while connecting to the database for deleting."; }
 	 
+	
 	 // create a prepared statement
 	 String query = "delete from consumption where ID=?"; 
 	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+	
 	 // binding values
 	 preparedStmt.setInt(1, Integer.parseInt(ID)); 
 	 
+	
 	 // execute the statement
 	 preparedStmt.execute(); 
 	 con.close(); 
@@ -169,4 +185,68 @@ public String updateCunsumption(String ID, String Dname, String DZipCode, String
 	 } 
 	 return output; 
 	 } 
+	
+	
+	
+//	//Search
+//	
+public String searchCunsumption(String Dname) {
+		
+		String output="";
+		try{ 
+			Connection con = connect(); 
+			if (con == null)  {
+				return "Error while connecting to the database";
+				} 
+				
+				output = "<html>"
+						+"<table border='1'><tr>"+
+						"<th>Dname</th>"+
+						"<th>DZipCode</th>" +
+						"<th>DUsedUnits</th>" +
+						"<th>Month</th>" +
+						"<th>Note</th>" ; 
+
+			// create a prepared statement
+			String query = "select * from consumption where Dname='"+Dname+"'"; 
+			Statement stmt = con.createStatement(); 
+		 	ResultSet rs = stmt.executeQuery(query);
+		 	while(rs.next()) {
+		 		
+		 		//String AccountNum = rs.getString("AccountNum"); 
+		 	 
+				
+				String DZipCode= rs.getString("DZipCode"); 
+				String DUsedUnits = rs.getString("DUsedUnits");
+				String Month = rs.getString("Month");
+				String Note = rs.getString("Note");
+				
+		
+				
+ 				output += "<td>" + Dname + "</td>"; 
+ 				output += "<td>" + DZipCode + "</td>"; 
+ 				output += "<td>" + DUsedUnits + "</td>"; 
+ 				output += "<td>" + Month + "</td>"; 
+ 				output += "<td>" + Note + "</td>"; 
+ 				 
+
+				
+		 	}
+			
+			con.close(); 
+	 
+				output += "</table></html>"; 
+
+		} 
+		catch (Exception e) { 
+			output = "Error while searching";  
+			System.err.println(e.getMessage()); 
+		} 
+		return output;
+	
+
+}
+
+
+
 	}
