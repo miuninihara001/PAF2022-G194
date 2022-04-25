@@ -37,7 +37,7 @@ public class UnitServices {
 	Units readObj = new Units();
 	
 	@POST
-	@Path("/")
+	@Path("/insertUnits")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String insertItem(@FormParam("accountNo") String accountNo,
@@ -47,15 +47,30 @@ public class UnitServices {
 	 @FormParam("consumedUnits") Integer consumedUnits,
 	 @FormParam("year") String year,
 	 @FormParam("month") String month)
+	
+	
+	// Validations
 	{
+		{	
+		if(accountNo.isEmpty()||consumerName.isEmpty()||address.isEmpty()||district.isEmpty()||year.isEmpty()||month.isEmpty())
+			{
+				 return "Fields can not be Empty !!!";
+			}
+		}
+		
+		{
+			 if(accountNo.length()!=6) {
+				 return "Account Number Length should be 6 characters !";
+			 }
+		}
 	 String output = readObj.insertUnits(accountNo, consumerName, address, district, consumedUnits, year,month);
-	return output;
+	 return output;
 	}
 
 	
 	
 	@GET
-	@Path("/")
+	@Path("/readUnits")
 	@Produces(MediaType.TEXT_HTML)
 	public String readUnits()
 	 {
@@ -65,7 +80,7 @@ public class UnitServices {
 	
 	
 	@PUT
-	@Path("/")
+	@Path("/updateUnits")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String updateUnit(String unitData)
@@ -83,15 +98,31 @@ public class UnitServices {
 		String year = itemObject.get("year").getAsString();
 		String month = itemObject.get("month").getAsString();
 		
-		String output = readObj.updateUnit(recordID, accountNo, consumerName, address, district, consumedUnits, year, month);
 		
+		// Validations
+		{
+			{	
+			if(accountNo.isEmpty()||consumerName.isEmpty()||address.isEmpty()||district.isEmpty()||year.isEmpty()||month.isEmpty())
+				{
+					 return "Fields can not be Empty !!!";
+				}
+			}
+			
+			{
+				 if(accountNo.length()!=6) {
+					 return "Account Number Length should be 6 characters !";
+				 }
+			}
+		
+		String output = readObj.updateUnit(recordID, accountNo, consumerName, address, district, consumedUnits, year, month);
 		return output;
+		}
 	}
-	
 
-	
+
+
 	@DELETE
-	@Path("/")
+	@Path("/deleteUnits")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String deleteItem(String unitData)
@@ -106,7 +137,7 @@ public class UnitServices {
 	}
 	
 	
-
+// search
 
 	@GET
 	@Path("/searchUnits")
