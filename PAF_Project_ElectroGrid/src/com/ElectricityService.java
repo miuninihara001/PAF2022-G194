@@ -28,7 +28,7 @@ public class ElectricityService {
 	
 	Electricity eleconnec = new Electricity();
 	@GET
-	@Path("/readconnection")
+	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
 	public String readCons()
 	 {
@@ -37,7 +37,7 @@ public class ElectricityService {
 
 	
 	@POST
-	@Path("/inserteConnection")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String insertNewConnection(@FormParam("AccountNum") String AccountNum,
@@ -82,7 +82,7 @@ public class ElectricityService {
 	
 	
 	@PUT
-	@Path("/updateConnection")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String updateConnections(String ConData)
@@ -134,7 +134,7 @@ public class ElectricityService {
 	
 	
 	@DELETE
-	@Path("/deleteConnection")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String deleteConnection(String ConnectionData)

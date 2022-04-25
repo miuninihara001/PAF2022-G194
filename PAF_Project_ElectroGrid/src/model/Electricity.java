@@ -49,7 +49,7 @@ public class Electricity {
 	 
 				preparedStmt.execute();
 				con.close();
-				output = "Inserted successfully";
+				output = "New electricity connection details inserted successfully";
 			}
 			catch (Exception e)
 			{
@@ -143,7 +143,7 @@ public class Electricity {
 				// execute the statement
 				preparedStmt.execute();
 				con.close();
-				output = "Updated successfully";
+				output = "Electricity connection details updated successfully";
 			}
 			catch (Exception e)
 			{
