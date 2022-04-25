@@ -23,8 +23,12 @@ public class Billing
 	 } 
 	
 	
-	public String insertBillDetails(String accountNo, String month, String units, String amount,String date) 
-	 { 
+	
+	//Insert Function
+	
+	public String insertBillDetails(String accountNo, String month,String date) 
+	 {
+
 	 String output = ""; 
 	 try
 	 { 
@@ -32,7 +36,31 @@ public class Billing
 	 if (con == null) 
 	 {return "Error while connecting to the database for inserting."; } 
 	 
+	 int units = Integer.parseInt(GetUnits(accountNo,month));
 	 
+	 
+	 Double amount = 0.0;
+	 
+	if (units <= 30){
+		amount = 30 + units * 2.5;
+	}
+	else if (units <=60) {
+		amount = 60 + units * 4.85;
+	}
+	else if (units <=90) {
+		amount = 90 + units * 8.25;
+	}
+	else if (units <=120) {
+		amount = 480 + units * 13.00;
+	}
+	else if (units <=180) {
+		amount = 480 + units * 18.00;
+	}
+	else {
+		amount = 540 + units * 23.50;
+	}
+
+	
 	 // create a prepared statement
 	 
 	 String query = " insert into billing(`Bill_ID`,`AccountNo`,`Month`,`Units`,`Amount`,`Date`)"
@@ -45,8 +73,8 @@ public class Billing
 	 preparedStmt.setInt(1, 0); 
 	 preparedStmt.setString(2, accountNo); 
 	 preparedStmt.setString(3, month); 
-	 preparedStmt.setInt(4, Integer.parseInt(units)); 
-	 preparedStmt.setDouble(5, Double.parseDouble(amount));
+	 preparedStmt.setInt(4, units); 
+	 preparedStmt.setDouble(5,amount);
 	 preparedStmt.setString(6,date);
 	 
 	 
@@ -58,12 +86,47 @@ public class Billing
 	 } 
 	 catch (Exception e) 
 	 { 
-	 output = "Error while inserting the Bill Details."; 
+	 output = "Error while inserting the Bill Details."+e; 
 	 System.err.println(e.getMessage()); 
 	 } 
 	 return output; 
 	 } 
 	
+	 public String GetUnits(String accountNo, String month) {
+		 String output="";
+		 
+		 try {
+				 Connection con = connect(); 
+				 if (con == null) 
+				 {
+					 return "Error while connecting to the database for reading."; 
+				 }
+				 
+				 
+				 String query = "SELECT consumedUnits FROM unit_records WHERE accountNo= '"+accountNo+"' AND Month ='"+month+"'" ; 
+				 
+				 
+				 Statement stmt = con.createStatement(); 
+				 ResultSet rs = stmt.executeQuery(query); 
+				 
+				 
+				 while (rs.next()) 
+				 { 
+				  output = Integer.toString(rs.getInt("consumedUnits"));
+				  
+				 }
+				 System.out.println("hello"+output);
+			 }
+		 
+		 catch(Exception ex) {
+			 System.out.println("hello"+ex);
+		 }
+		 return output;
+	 }
+	
+	 
+	 // Read Function
+	 
 	public String readBillDetails() 
 	 { 
 	 String output = ""; 
@@ -98,7 +161,6 @@ public class Billing
 	 String Amount = Double.toString(rs.getDouble("Amount")); 
 	 String Date = rs.getString("Date");
 	 
-	
 	 // Add into the html table
 	 
 	 output += "<tr><td>" + Bill_ID + "</td>";
@@ -107,7 +169,6 @@ public class Billing
 	 output += "<td>" + Units + "</td>"; 
 	 output += "<td>" + Amount + "</td>"; 
 	 output += "<td>" + Date + "</td>";
-	 
 	 
 	 // buttons
 	 
@@ -131,6 +192,10 @@ public class Billing
 	 return output; 
 	 } 
 	
+	
+	
+	//Update Function
+	
 	public String updateBillDetails(String billno, String accountNo, String month, String units, String amount, String date) 
 	 
 	 { 
@@ -147,7 +212,6 @@ public class Billing
 	 String query = "UPDATE billing SET AccountNo=?,Month=?,Units=?,Amount=?, Date=? WHERE Bill_ID=?"; 
 	 PreparedStatement preparedStmt = con.prepareStatement(query); 
 	 
-	 
 	 // binding values
 	 
 	 preparedStmt.setString(1, accountNo); 
@@ -157,8 +221,7 @@ public class Billing
 	 preparedStmt.setInt(5, Integer.parseInt(billno)); 
 	 preparedStmt.setString(6, date); 
 	 
-	 
-	 
+	  
 	 // execute the statement
 	 
 	 preparedStmt.execute(); 
@@ -172,6 +235,10 @@ public class Billing
 	 } 
 	 return output; 
 	 } 
+	
+	
+	// Delete Function
+	
 	public String deleteBillDetails(String Bill_ID) 
 	 { 
 	 String output = ""; 
@@ -181,17 +248,14 @@ public class Billing
 	 if (con == null) 
 	 {return "Error while connecting to the database for deleting."; } 
 	 
-	 
 	 // create a prepared statement
 	 
 	 String query = "delete from billing where Bill_ID=?"; 
 	 PreparedStatement preparedStmt = con.prepareStatement(query); 
 	 
-	 
 	 // binding values
 	 
 	 preparedStmt.setInt(1, Integer.parseInt(Bill_ID)); 
-	 
 	 
 	 // execute the statement
 	 
@@ -207,5 +271,61 @@ public class Billing
 	 return output; 
 	 } 
 	
+	
+public String searchBills(String billno) {
+		
+		String output="";
+		try{ 
+			Connection con = connect(); 
+			if (con == null)  {
+				return "Error while connecting to the database";
+				} 
+				
+				output = "<html>"
+						+"<table border='1'><tr><th>Bill_ID</th>"+
+						"<th>AccountNo</th>"+
+						"<th>Month</th>" +
+						"<th>Units</th>" +
+						"<th>Amount</th>" +
+						"<th>Date</th>" ; 
+
+			// create a prepared statement
+			String query = "select * from billing where Bill_ID='"+billno+"'"; 
+			Statement stmt = con.createStatement(); 
+		 	ResultSet rs = stmt.executeQuery(query);
+		 	while(rs.next()) {
+		 		//String AccountNum = rs.getString("AccountNum"); 
+		 		String Bill_ID = rs.getString("Bill_ID"); 
+				String AcountNo = rs.getString("AcountNo");
+				String Month= rs.getString("Month"); 
+				String Units = rs.getString("Units");
+				String Amount = rs.getString("Amount");
+				String Date = rs.getString("Date");
+			
+				
+				output += "<td>" + Bill_ID + "</td>"; 
+ 				output += "<td>" + AcountNo + "</td>"; 
+ 				output += "<td>" + Month + "</td>"; 
+ 				output += "<td>" + Units + "</td>"; 
+ 				output += "<td>" + Amount + "</td>"; 
+ 				output += "<td>" + Date + "</td>"; 
+ 				 
+
+				
+		 	}
+			
+			con.close(); 
+	 
+				output += "</table></html>"; 
+
+		} 
+		catch (Exception e) { 
+			output = "Error while searching";  
+			System.err.println(e.getMessage()); 
+		} 
+		return output;
+	
+
+}
 
 }

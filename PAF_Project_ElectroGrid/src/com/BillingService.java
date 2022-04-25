@@ -42,12 +42,11 @@ public class BillingService {
 									
 									@FormParam("AccountNo") String AccountNo, 
 									@FormParam("Month") String Month, 
-									@FormParam("Units") String Units, 
-									@FormParam("Amount") String Amount,
 									@FormParam("Date") String Date)
 	
 	{ 
-	 String output = BillObj.insertBillDetails(AccountNo, Month, Units, Amount,Date); 
+	
+	String output = BillObj.insertBillDetails(AccountNo, Month, Date); 
 	return output; 
 	}
 	
@@ -72,6 +71,8 @@ public class BillingService {
 	 
 	return output; 
 	}
+	
+	// Delete Bill Details
 
 	@DELETE
 	@Path("/")
@@ -91,7 +92,7 @@ public class BillingService {
 	}
 
 	
-	
+	// Search Bills
 	
 	@GET
 	@Path("/search")
