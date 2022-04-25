@@ -35,7 +35,7 @@ public class BillingService {
 	
 	
 	@POST
-	@Path("/") 
+	@Path("/searchBill") 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String insertBillDetails(
@@ -113,7 +113,7 @@ public class BillingService {
 	// Search Bills
 	
 	@GET
-	@Path("/search")
+	@Path("/searchBill")
 	@Produces(MediaType.TEXT_HTML)
 	public String searchBills(String billingDatata) {
 		Document doc = Jsoup.parse(billingDatata, "", Parser.xmlParser()); 
