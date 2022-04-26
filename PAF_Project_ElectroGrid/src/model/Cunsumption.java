@@ -20,7 +20,7 @@ public class Cunsumption
            return con; 
     } 
     
-  public String insertconsumption(String Dname, String DZipCode, String DUsedUnits,String Month, String Note) 
+  public String insertconsumption(String Dname,String Month, String Note) 
   { 
    String output = ""; 
    
@@ -30,6 +30,9 @@ public class Cunsumption
     
   if (con == null) 
   {return "Error while connecting to the database for inserting."; } 
+  
+  int DUsedUnits = Integer.parseInt(GetUnits(Dname));
+  String DZipCode = GetZipcode(Dname);
  
  // create a prepared statement
  String query = " insert into consumption(`ID`,`Dname`,`DZipCode`,`DUsedUnits`,`Month` ,`Note`)"
@@ -39,8 +42,8 @@ public class Cunsumption
  // binding values
             preparedStmt.setInt(1, 0); 
             preparedStmt.setString(2, Dname); 
-            preparedStmt.setString(3, DZipCode); 
-            preparedStmt.setDouble(4, Double.parseDouble(DUsedUnits)); 
+            preparedStmt.setString(3,DZipCode); 
+            preparedStmt.setInt(4, DUsedUnits); 
             preparedStmt.setString(5, Month);
             preparedStmt.setString(6, Note); 
  
@@ -58,7 +61,73 @@ public class Cunsumption
   return output; 
  
  }
+  // Get Zip code 
+  public String GetZipcode(String Dname) {
+		 String output="";
+		 
+		 try {
+				 Connection con = connect(); 
+				 if (con == null) 
+				 {
+					 return "Error while connecting to the database for reading."; 
+				 }
+				 
+				 
+				 String query = "SELECT DZipCode FROM `distric zip codes` WHERE Disname= '"+Dname+"'" ; 
+				 
+				 
+				 Statement stmt = con.createStatement(); 
+				 ResultSet rs = stmt.executeQuery(query); 
+				 
+				 
+				 while (rs.next()) 
+				 { 
+				  output = rs.getString("DZipCode");
+				  
+				 }
+				 System.out.println("hello"+output);
+			 }
+		 
+		 catch(Exception ex) {
+			 System.out.println("hello"+ex);
+		 }
+		 return output;
+	 }
+  
+  // get total units according to District
+  public String GetUnits(String Dname) {
+		 String output="";
+		 
+		 try {
+				 Connection con = connect(); 
+				 if (con == null) 
+				 {
+					 return "Error while connecting to the database for reading."; 
+				 }
+				 
+				 
+				 String query = "SELECT SUM(consumedUnits) FROM unit_records WHERE district = '"+Dname+"'" ; 
+				 
+				 
+				 Statement stmt = con.createStatement(); 
+				 ResultSet rs = stmt.executeQuery(query); 
+				 
+				 
+				 while (rs.next()) 
+				 { 
+				  output = Integer.toString(rs.getInt("SUM(consumedUnits)"));
+				  
+				 }
+				 System.out.println("hello"+output);
+			 }
+		 
+		 catch(Exception ex) {
+			 System.out.println("hello"+ex);
+		 }
+		 return output;
+	 }
 
+			 
   public String readCunsumption() 
  { 
  String output = ""; 
@@ -119,7 +188,9 @@ public class Cunsumption
  } 
    return output; 
  } 
-    public String updateCunsumption(String ID, String Dname, String DZipCode, String DUsedUnits, String Month, String Note) 
+
+  
+    public String updateCunsumption(String ID,String Dname, String Month,String Note) 
 
 { 
 	 String output = ""; 
@@ -129,17 +200,15 @@ public class Cunsumption
 	 if (con == null) 
 	 {return "Error while connecting to the database for updating."; } 
 	 // create a prepared statement
-	 String query = "UPDATE consumption SET Dname=?,DZipCode=?,DUsedUnits=?,Month=?,Note=? WHERE ID=?"; 
+	 String query = "UPDATE consumption SET Dname=?,Month=?,Note=? WHERE ID=?"; 
 	 PreparedStatement preparedStmt = con.prepareStatement(query); 
 	
 	 
 	 // binding values
 	 preparedStmt.setString(1, Dname); 
-	 preparedStmt.setString(2, DZipCode); 
-	 preparedStmt.setDouble(3, Double.parseDouble(DUsedUnits)); 
-	 preparedStmt.setString(4, Month);
-	 preparedStmt.setString(5, Note); 
-	 preparedStmt.setInt(6, Integer.parseInt(ID)); 
+	 preparedStmt.setString(2, Month);
+	 preparedStmt.setString(3, Note); 
+	 preparedStmt.setInt(4, Integer.parseInt(ID)); 
 	 
 	 
 	 // execute the statement
@@ -246,6 +315,7 @@ public String searchCunsumption(String Dname) {
 	
 
 }
+
 
 
 
