@@ -30,12 +30,14 @@ public class PaymentService {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String insertItem(@FormParam("Name") String Name, 
+	 @FormParam("Address") String Address,
+	 @FormParam("MobileNo") String MobileNo,
 	 @FormParam("CardNo") String CardNo, 
 	 @FormParam("HlderName") String HlderName, 
 	 @FormParam("CVV") String CVV,
 	 @FormParam("Exdate") String Exdate) 
 	{ 
-	 String output = payment.PaymentAdd(Name, CardNo, HlderName, CVV, Exdate); 
+	 String output = payment.PaymentAdd(Name, Address, MobileNo, CardNo, HlderName, CVV, Exdate); 
 	return output; 
 	}
 	

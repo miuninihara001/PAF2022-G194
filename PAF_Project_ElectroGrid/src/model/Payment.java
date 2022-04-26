@@ -16,7 +16,7 @@ public class Payment {
  
 			//Provide the correct details: DBServer/DBName, username, password 
  
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/items", "root", "15263"); 
+			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/items", "root", ""); 
 			System.out.println("----Connection Succsuss !----");
 		} 
  
@@ -28,7 +28,7 @@ public class Payment {
 		} 
 	
 	//Payment
-	public String PaymentAdd(String Name, String CardNo, String HlderName, String CVV, String Exdate) { 
+	public String PaymentAdd(String Name, String Address, String MobileNo, String CardNo, String HlderName, String CVV, String Exdate) { 
 		 
 		String output = ""; 
  
@@ -44,16 +44,18 @@ public class Payment {
  
 				// create a prepared statement
  
-				String query = " insert into payment (`id`,`Name`,`CardNo`,`HlderName`,`CVV`,`Exdate`)" + " values (?, ?, ?, ?, ?, ?)"; 
+				String query = " insert into payment (`id`,`Name`,`Address`,`MobileNo`,`CardNo`,`HlderName`,`CVV`,`Exdate`)" + " values (?, ?, ?, ?, ?, ?)"; 
 				PreparedStatement preparedStmt = con.prepareStatement(query); 
  
 				// binding values
 				preparedStmt.setInt(1, 0); 
 				preparedStmt.setString(2, Name); 
-				preparedStmt.setString(3, CardNo); 
-				preparedStmt.setString(4, HlderName); 
-				preparedStmt.setString(5, CVV); 
-				preparedStmt.setString(6, Exdate);
+				preparedStmt.setString(3, Address); 
+				preparedStmt.setString(4, MobileNo); 
+				preparedStmt.setString(5, CardNo); 
+				preparedStmt.setString(6, HlderName); 
+				preparedStmt.setString(7, CVV); 
+				preparedStmt.setString(8, Exdate);
 				
 				// execute the statement
 				preparedStmt.execute(); 
