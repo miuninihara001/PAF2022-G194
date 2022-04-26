@@ -22,11 +22,11 @@ import org.jsoup.nodes.Document;
 public class BillingService {
 
 	
-	// Insert Data to the Bill
+	// Read Data 
 	
 	Billing BillObj = new Billing(); 
 	@GET
-	@Path("/") 
+	@Path("/readBill") 
 	@Produces(MediaType.TEXT_HTML) 
 	public String readBillDetails() 
 	 { 
@@ -34,8 +34,10 @@ public class BillingService {
 	 } 
 	
 	
+	//Insert Data
+	
 	@POST
-	@Path("/searchBill") 
+	@Path("/insertBill") 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String insertBillDetails(
@@ -54,23 +56,25 @@ public class BillingService {
 						 return "All the Bill Details must be filled out";
 					}
 				
-					else if(Month.length()>20) {
+					else if(Month.length()>15) {
 						 return "Invalide Value Inserted";
 					 }
 					else if (Date.length()!=10) {
 						return "Invalid format";
 					}
-					
+					else if(AccountNo.length()!=6) {
+						return "Account Number should consist of 6 characters";
+					}
 			 
 	String output = BillObj.insertBillDetails(AccountNo, Month, Date); 
 	return output; 
 	}
 	
-	
-//Update Function
+	  
+	//Update Function
 	
 	@PUT
-	@Path("/") 
+	@Path("/updateBill") 
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String updateBillDetails(String billingDatata) 
@@ -93,7 +97,7 @@ public class BillingService {
 	// Delete Bill Details
 
 	@DELETE
-	@Path("/")
+	@Path("/deleteBill")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.TEXT_PLAIN)
 	
